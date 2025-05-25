@@ -20,7 +20,6 @@ public class UserAccountPage extends BasePage {
     private final By myAccountLinkLocator = By.linkText("My Account");
     private final By forgotPasswordEmailLabelLocator = By.xpath("//label[@for='inputEmail' and contains(text(), 'E-Mail Address')]");
     private final By forgotPasswordEmailInputLocator = By.id("inputEmail");
-    // NEW LOCATORS FOR LOGOUT
     // This is the main dropdown trigger link (e.g., "Welcome Zhao!")
     private final By loggedDropdownTriggerLocator = By.cssSelector(".logged-dropdown > .nav-link"); 
     // This is the actual "Log Off" link inside the dropdown menu
@@ -162,9 +161,6 @@ public class UserAccountPage extends BasePage {
      * @return Current page object.
      */
     public UserAccountPage triggerAccountDropdown() {
-        // Option 1: Click the dropdown trigger (most common and robust)
-        // clickElement(loggedDropdownTriggerLocator);
-        // Option 2: Hover (sometimes needed, but clicking is often enough for dropdowns)
         Actions actions = new Actions(driver);
         actions.moveToElement(waitAndReturnElement(loggedDropdownTriggerLocator)).perform();
         wait.until(ExpectedConditions.visibilityOfElementLocated(logOffLinkLocator)); // Wait for the menu items to be visible
