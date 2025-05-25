@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
+import org.openqa.selenium.interactions.Actions;
 
 /**
  * User account page object class
@@ -15,12 +16,17 @@ public class UserAccountPage extends BasePage {
     private final By passwordInputLocator = By.id("password_login");
     private final By loginButtonLocator = By.xpath("//button[span[text()='Login']]");
     private final By forgotPasswordLinkLocator = By.linkText("Forgotten password");
-    private final By accountMenuLocator = By.cssSelector("#column-right .list-group");
-    private final By logoutLinkLocator = By.linkText("Logout");
     private final By registerLinkLocator = By.linkText("Create your own account");
     private final By myAccountLinkLocator = By.linkText("My Account");
     private final By forgotPasswordEmailLabelLocator = By.xpath("//label[@for='inputEmail' and contains(text(), 'E-Mail Address')]");
     private final By forgotPasswordEmailInputLocator = By.id("inputEmail");
+    // NEW LOCATORS FOR LOGOUT
+    // This is the main dropdown trigger link (e.g., "Welcome Zhao!")
+    private final By loggedDropdownTriggerLocator = By.cssSelector(".logged-dropdown > .nav-link"); 
+    // This is the actual "Log Off" link inside the dropdown menu
+    private final By logOffLinkLocator = By.xpath("//ul[contains(@class, 'dropdown-hover-menu')]//a[@title='Log Off' and normalize-space()='Log Off']");
+    // Locator to verify being on the login page after logout
+    private final By loginPageHeaderLocator = By.xpath("//div[@class='center page-head-center text-center']/h1[normalize-space()='Login']");
     
     /**
      * Constructor
@@ -115,120 +121,6 @@ public class UserAccountPage extends BasePage {
         return this;
     }
     
-    /**
-     * Click register link
-     * @return Current page object
-     */
-    public UserAccountPage clickRegister() {
-        try {
-            if (isElementPresent(registerLinkLocator)) {
-                clickElement(registerLinkLocator);
-            } else {
-                // Try alternative locators
-                By altRegisterLocator = By.partialLinkText("Create");
-                
-                if (isElementPresent(altRegisterLocator)) {
-                    clickElement(altRegisterLocator);
-                } else {
-                    System.out.println("Register link not found");
-                }
-            }
-            waitForPageLoad();
-        } catch (Exception e) {
-            System.out.println("Error clicking register: " + e.getMessage());
-        }
-        return this;
-    }
-    
-    /**
-     * Click my account link
-     * @return Current page object
-     */
-    public UserAccountPage clickMyAccount() {
-        try {
-            if (isElementPresent(myAccountLinkLocator)) {
-                clickElement(myAccountLinkLocator);
-            } else {
-                // Try alternative locators
-                By altMyAccountLocator = By.partialLinkText("Account");
-                
-                if (isElementPresent(altMyAccountLocator)) {
-                    clickElement(altMyAccountLocator);
-                } else {
-                    System.out.println("My account link not found");
-                }
-            }
-            waitForPageLoad();
-        } catch (Exception e) {
-            System.out.println("Error clicking my account: " + e.getMessage());
-        }
-        return this;
-    }
-    
-    /**
-     * Logout
-     * @return Current page object
-     */
-    public UserAccountPage logout() {
-        try {
-            if (isElementPresent(logoutLinkLocator)) {
-                clickElement(logoutLinkLocator);
-                waitForPageLoad();
-            } else {
-                // Try alternative locators
-                By altLogoutLocator = By.partialLinkText("Logout");
-                
-                if (isElementPresent(altLogoutLocator)) {
-                    clickElement(altLogoutLocator);
-                } else {
-                    System.out.println("Logout link not found");
-                }
-                waitForPageLoad();
-            }
-        } catch (Exception e) {
-            System.out.println("Error during logout: " + e.getMessage());
-        }
-        return this;
-    }
-    
-    /**
-     * Check if logged in
-     * @return Whether logged in
-     */
-    public boolean isLoggedIn() {
-        try {
-            return isElementPresent(logoutLinkLocator) || 
-                   isElementPresent(By.partialLinkText("Logout"));
-        } catch (Exception e) {
-            System.out.println("Error checking if logged in: " + e.getMessage());
-            return false;
-        }
-    }
-    
-    /**
-     * Get account menu item count
-     * @return Menu item count
-     */
-    public int getAccountMenuItemCount() {
-        try {
-            if (isElementPresent(accountMenuLocator)) {
-                WebElement menu = waitAndReturnElement(accountMenuLocator);
-                List<WebElement> menuItems = menu.findElements(By.tagName("a"));
-                return menuItems.size();
-            } else {
-                // Try alternative approach - count all links in the account section
-                List<WebElement> accountLinks = driver.findElements(By.cssSelector(".account-section a, .account-area a"));
-                if (!accountLinks.isEmpty()) {
-                    return accountLinks.size();
-                }
-                System.out.println("Account menu locator not found. Returning 0 items.");
-                return 0;
-            }
-        } catch (Exception e) {
-            System.out.println("Error getting account menu item count: " + e.getMessage());
-            return 0;
-        }
-    }
 
     /**
      * Get page title (for verification in tests)
@@ -263,5 +155,63 @@ public class UserAccountPage extends BasePage {
             System.out.println("Error checking if forgot password page is loaded: " + e.getMessage());
             return false;
     }
+    }
+
+        /**
+     * Triggers the dropdown menu to become visible (by hovering or clicking the main trigger).
+     * @return Current page object.
+     */
+    public UserAccountPage triggerAccountDropdown() {
+        // Option 1: Click the dropdown trigger (most common and robust)
+        // clickElement(loggedDropdownTriggerLocator);
+        // Option 2: Hover (sometimes needed, but clicking is often enough for dropdowns)
+        Actions actions = new Actions(driver);
+        actions.moveToElement(waitAndReturnElement(loggedDropdownTriggerLocator)).perform();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(logOffLinkLocator)); // Wait for the menu items to be visible
+        System.out.println("Account dropdown triggered.");
+        return this;
+    }
+
+    /**
+     * Clicks the "Log Off" link in the account dropdown menu.
+     * Assumes the dropdown is already open/triggered.
+     * @return Current page object.
+     */
+    public UserAccountPage clickLogOffLink() {
+        clickElement(logOffLinkLocator);
+        waitForPageLoad(); // Wait for navigation to the login page
+        System.out.println("Clicked Log Off link.");
+        return this;
+    }
+    
+    /**
+     * Checks if the user is currently logged in by checking for the dropdown trigger.
+     * This is a better check than just looking for a "Logout" link that might be hidden.
+     * @return Whether the user appears to be logged in.
+     */
+    public boolean isLoggedIn() { 
+        try {
+            boolean loggedInDropdownVisible = isElementPresentAndVisible(loggedDropdownTriggerLocator);
+
+            System.out.println("DEBUG: isLoggedIn() - Logged-in dropdown visible: " + loggedInDropdownVisible);
+            return loggedInDropdownVisible;
+
+        } catch (Exception e) {
+            System.err.println("Error checking if logged in: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * Checks if the page is the login page (after logout).
+     * @return true if the login page is loaded, false otherwise.
+     */
+    public boolean isLoginPageLoaded() {
+        try {
+            return isElementPresent(loginPageHeaderLocator);
+        } catch (Exception e) {
+            System.err.println("Error checking if login page is loaded: " + e.getMessage());
+            return false;
+        }
     }
 }

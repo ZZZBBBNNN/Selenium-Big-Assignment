@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.NoSuchElementException;
 
 /**
  * Base page class, parent class for all page objects
@@ -92,6 +94,21 @@ public class BasePage {
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             return true;
         } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Checks if an element is present in the DOM AND visible on the page.
+     * @param locator The By locator for the element.
+     * @return true if the element is present and visible, false otherwise.
+     */
+    protected boolean isElementPresentAndVisible(By locator) {
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            return true;
+        } catch (org.openqa.selenium.TimeoutException | org.openqa.selenium.NoSuchElementException e) {
+            // Element not found or not visible within the timeout
             return false;
         }
     }
