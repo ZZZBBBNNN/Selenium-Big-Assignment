@@ -14,18 +14,10 @@ public class HomePage extends BasePage {
     // Locators
     private final By searchInputLocator = By.xpath("//input[@placeholder='Keywords']");
     private final By searchButtonLocator = By.xpath("//button[@onclick='moduleSearch();']");
-
     private final By logoLocator = By.xpath("//div[contains(@class, 'header-navbar-top-center')]//img[@alt='ELTE SHOP ']");
-
     private final By navigationMenuLocator = By.xpath("//div[@id='category-nav']/ul");
-
-    // MODIFIED: clothesMenuLocator to use XPath based on the <li>'s ID.
-    // Please verify that 'cat_133' indeed corresponds to the "Clothes" menu item on your website.
     private final By clothesMenuLocator = By.xpath("//li[@id='cat_133']/a");
-
     private final By cookieAcceptButtonLocator = By.linkText("Elfogadom");
-
-    // These locators should be correct if the navigationMenuLocator is fixed
     private final By productsMenuLocator = By.linkText("Products");
     private final By newMenuLocator = By.linkText("New");
 
@@ -100,10 +92,8 @@ public class HomePage extends BasePage {
      * Navigate to new products category
      * @return Product list page object
      */
-    public HomePage navigateToNew() { // Return HomePage here, as it's a category link
+    public HomePage navigateToNew() {
         clickElement(newMenuLocator);
-        // Assuming "New" page is a product list page. If not, this needs to return HomePage or a new specific Page Object.
-        // For consistency, returning HomePage as it's a top-level nav link.
         return new HomePage(driver);
     }
 

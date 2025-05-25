@@ -22,15 +22,8 @@ public class BaseTest {
     @Before
     public void setup() throws MalformedURLException {
         ChromeOptions options = new ChromeOptions();
-        
-        // FIXED: Add common ChromeOptions for stability in Docker/headless environments
-        // These are often required for Chrome in containerized environments,
-        // especially older versions like Chrome 65.
         options.addArguments("--no-sandbox"); // Disables sandbox mode, needed for Docker often
         options.addArguments("--disable-dev-shm-usage"); // Overcomes limited /dev/shm in some Docker setups
-        // If you were running without the '-debug' image or seeing issues without UI,
-        // you might also add --headless here. But for -debug, Xvfb handles it.
-        // options.addArguments("--headless"); 
         
         this.driver = new RemoteWebDriver(new URL("http://selenium:4444/wd/hub"), options);
         this.driver.manage().window().maximize();

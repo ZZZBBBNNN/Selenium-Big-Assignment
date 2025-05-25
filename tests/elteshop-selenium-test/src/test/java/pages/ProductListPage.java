@@ -41,12 +41,11 @@ public class ProductListPage extends BasePage {
         try {
             wait.until(ExpectedConditions.or(
                 ExpectedConditions.visibilityOfElementLocated(resultsCountTextLocator), // For pages with product counts (e.g., search results)
-                ExpectedConditions.visibilityOfElementLocated(pageHeadingLocator)      // For category pages like ""
+                ExpectedConditions.visibilityOfElementLocated(pageHeadingLocator)
             ));
             System.out.println("Product List Page: Either results count element or page heading is visible, page likely loaded.");
         } catch (org.openqa.selenium.TimeoutException e) {
             System.err.println("Product List Page: Timeout waiting for expected page load element (results count or heading). " + e.getMessage());
-            // It's critical here to fail if the page didn't load correctly by any means.
             throw new org.openqa.selenium.TimeoutException("Product List Page did not load correctly: Neither results count nor page heading found within timeout.", e);
         }
     }
@@ -142,40 +141,6 @@ public class ProductListPage extends BasePage {
         By productLinkLocator = By.linkText(productName);
         clickElement(productLinkLocator);
         return new ProductDetailPage(driver);
-    }
-
-    /**
-     * Set sort order.
-     * @param sortOption Sort option text
-     * @return Current page object
-     */
-    public ProductListPage setSortOrder(String sortOption) {
-        if (isElementPresent(sortSelectLocator)) {
-            WebElement sortSelect = waitAndReturnElement(sortSelectLocator);
-            Select dropdown = new Select(sortSelect);
-            dropdown.selectByVisibleText(sortOption);
-            waitForPageLoad();
-        } else {
-            System.out.println("Sort order select element not found.");
-        }
-        return this;
-    }
-
-    /**
-     * Set items per page.
-     * @param limitOption Limit option text
-     * @return Current page object
-     */
-    public ProductListPage setItemsPerPage(String limitOption) {
-        if (isElementPresent(filterSelectLocator)) {
-            WebElement limitSelect = waitAndReturnElement(filterSelectLocator);
-            Select dropdown = new Select(limitSelect);
-            dropdown.selectByVisibleText(limitOption);
-            waitForPageLoad();
-        } else {
-            System.out.println("Items per page select element not found.");
-        }
-        return this;
     }
 
     /**

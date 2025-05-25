@@ -11,7 +11,6 @@ import java.util.List;
  * Handles interactions with the user account page
  */
 public class UserAccountPage extends BasePage {
-    // Updated locators based on actual page structure
     private final By emailInputLocator = By.id("email_login");
     private final By passwordInputLocator = By.id("password_login");
     private final By loginButtonLocator = By.xpath("//button[span[text()='Login']]");
@@ -40,7 +39,6 @@ public class UserAccountPage extends BasePage {
         } catch (org.openqa.selenium.TimeoutException e) {
             System.err.println("User Account Page: Timeout waiting for login page to load. Current URL: " + driver.getCurrentUrl());
             System.err.println("User Account Page: Page source excerpt: " + driver.getPageSource().substring(0, Math.min(500, driver.getPageSource().length())));
-            // Don't throw exception here to allow tests to continue with fallback approaches
         }
     }
     

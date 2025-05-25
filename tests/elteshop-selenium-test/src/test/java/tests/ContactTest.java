@@ -3,7 +3,6 @@ package tests;
 import org.junit.Test;
 import org.junit.Assert;
 import pages.ContactPage;
-// No need to import org.openqa.selenium.By here anymore, as it's handled within ContactPage
 
 /**
  * Contact page test class

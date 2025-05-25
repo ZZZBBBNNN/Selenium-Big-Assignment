@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.Assert;
 import pages.HomePage;
 import pages.ProductListPage;
-import pages.ProductDetailPage; // Ensure ProductDetailPage is imported
+import pages.ProductDetailPage;
 
 /**
  * Home page and product Browse test class

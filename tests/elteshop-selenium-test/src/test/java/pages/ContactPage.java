@@ -11,17 +11,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
  */
 public class ContactPage extends BasePage {
     // Locators
-    // Updated locators based on image_008a0a.png
     private final By nameInputLocator = By.id("form-element-name");
     private final By emailInputLocator = By.id("form-element-email");
     private final By enquiryTextareaLocator = By.id("form-element-enquiry");
-
     // GDPR consent checkbox locator based on label's 'for' attribute and common pattern
     private final By gdprConsentCheckboxLocator = By.id("form-element-gdpr_consent");
-
-    // Using CSS Selector for the continue button as per your latest ContactPage
     private final By continueButtonLocator = By.cssSelector(".buttons.contact-buttons .btn.btn-primary");
-
     private final By contactInfoLocator = By.id("contact-info");
     private final By successMessageLocator = By.cssSelector(".alert-success");
 
