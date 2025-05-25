@@ -13,23 +13,15 @@ The project implements the Page Object Model pattern with the following classes:
 - `HomePage` - Home page interactions
 - `ProductListPage` - Product listing page interactions
 - `ProductDetailPage` - Product detail page interactions
-- `UserAccountPage` - User account and login page interactions
+- `UserAccountPage` - User interactions
 - `ContactPage` - Contact form page interactions
 
-## Test Classes
-The project includes the following test classes:
+## Tests
+The project includes the following tests:
 - `BaseTest` - Base test class with setup and teardown methods
 - `HomePageTest` - Tests for home page and navigation
 - `UserAccountTest` - Tests for user account functionality
 - `ContactTest` - Tests for contact form (textarea interaction)
-
-## Features Implemented
-- **Page Object Model pattern** - Separation of page structure from test logic
-- **Explicit waits** - Dynamic waiting for elements to be visible/clickable
-- **Text field interaction** - Input handling and validation
-- **Dropdown menu interaction** - Selection and verification
-- **Page title verification** - Validation of correct page loading
-- **Error handling** - Robust exception management and logging
 
 ## Running the Tests
 To run the tests in the Docker environment:
