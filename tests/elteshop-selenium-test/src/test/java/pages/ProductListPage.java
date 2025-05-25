@@ -19,15 +19,9 @@ public class ProductListPage extends BasePage {
     // Locators
     private final By productItemsLocator = By.cssSelector("h2.product-card-item");
     private final By productNameLocator = By.tagName("a");
-    // private final By productPriceLocator = By.cssSelector(".price-new, .price"); // Removed as per previous request
-
     private final By sortSelectLocator = By.id("input-sort");
     private final By filterSelectLocator = By.id("input-limit");
-
-    // Page heading locator, specifically for <h1 class="page-head-title"></h1>
     private final By pageHeadingLocator = By.cssSelector("h1.page-head-title");
-
-    // Results count text locator (present on actual product listing pages)
     private final By resultsCountTextLocator = By.xpath("//div[contains(@class, 'sortbar-bottom')]//div[@class='results']");
 
     /**
